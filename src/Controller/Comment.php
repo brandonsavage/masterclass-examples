@@ -1,5 +1,9 @@
 <?php
 
+namespace Masterclass\Controller;
+
+use PDO;
+
 class Comment {
     
     public function __construct($config) {
@@ -11,7 +15,6 @@ class Comment {
     
     public function create() {
         if(!isset($_SESSION['AUTHENTICATED'])) {
-            die('not auth');
             header("Location: /");
             exit;
         }
