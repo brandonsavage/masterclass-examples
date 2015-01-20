@@ -12,15 +12,9 @@ class Story {
      */
     protected $storyModel;
 
-    /**
-     * @var array
-     */
-    protected $config;
-
-    public function __construct($config) {
-        $this->config = $config;
-        $this->storyModel = new StoryModel($config);
-        $this->commentModel = new Comment($config);
+    public function __construct(StoryModel $story, Comment $comment) {
+        $this->storyModel = $story;
+        $this->commentModel = $comment;
     }
     
     public function index() {
@@ -63,8 +57,8 @@ class Story {
                 ' . $comment['comment'] . '</div>
             ';
         }
-        
-        require_once $this->config['path'] . '/layout.phtml';
+
+        require '../layout.phtml';
         
     }
     
@@ -95,8 +89,8 @@ class Story {
                 <input type="submit" name="create" value="Create" />
             </form>
         ';
-        
-        require_once $this->config['path'] . '/layout.phtml';
+
+        require '../layout.phtml';
     }
     
 }

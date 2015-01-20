@@ -16,9 +16,8 @@ class Index {
      */
     protected $config;
     
-    public function __construct($config) {
-        $this->config = $config;
-        $this->model = new Story($config);
+    public function __construct(Story $story) {
+        $this->model = $story;
     }
     
     public function index() {
@@ -38,8 +37,7 @@ class Index {
         }
         
         $content .= '</ol>';
-        
-        require $this->config['path'] . '/layout.phtml';
+        require '../layout.phtml';
     }
 }
 
