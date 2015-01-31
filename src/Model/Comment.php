@@ -2,20 +2,20 @@
 
 namespace Masterclass\Model;
 
-use PDO;
+use Masterclass\Dbal\AbstractDb;
 
 class Comment
 {
     /**
-     * @var PDO
+     * @var AbstractDb
      */
     protected $db;
 
     /**
-     * @param PDO $pdo
+     * @param AbstractDb $db
      */
-    public function __construct(PDO $pdo) {
-        $this->db = $pdo;
+    public function __construct(AbstractDb $db) {
+        $this->db = $db;
     }
 
     /**
@@ -25,9 +25,7 @@ class Comment
     public function getCommentsForStory($storyId)
     {
         $comment_sql = 'SELECT * FROM comment WHERE story_id = ?';
-        $comment_stmt = $this->db->prepare($comment_sql);
-        $comment_stmt->execute(array($storyId));
-        $comments = $comment_stmt->fetchAll(PDO::FETCH_ASSOC);
+        $comments = $this->db->fetchAll($comment_sql, [$storyId]);
         return $comments;
     }
 
@@ -40,8 +38,7 @@ class Comment
     public function postNewComment($username, $storyId, $comment)
     {
         $sql = 'INSERT INTO comment (created_by, created_on, story_id, comment) VALUES (?, NOW(), ?, ?)';
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute(array(
+        return $this->db->execute($sql, array(
             $username,
             $storyId,
             filter_var($comment, FILTER_SANITIZE_FULL_SPECIAL_CHARS),

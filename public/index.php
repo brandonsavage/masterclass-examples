@@ -2,10 +2,17 @@
 
 session_start();
 
-$config = require_once('../config/config.php');
-require_once '../vendor/autoload.php';
+$path = realpath(__DIR__ . '/..');
 
-require_once('../config/diconfig.php');
+require_once $path . '/vendor/autoload.php';
+
+// Services need to be objects, so let's use a Closure object.
+$config = function() use ($path) {
+    return require ($path . '/config/config.php');
+};
+
+$diContainerBuilder = new Aura\Di\ContainerBuilder();
+$di = $diContainerBuilder->newInstance(['config' => $config], ['Masterclass\Configuration\DiConfig', 'Masterclass\Configuration\RouterConfig']);
 
 
 $framework = $di->newInstance('Masterclass\FrontController\MasterController');
