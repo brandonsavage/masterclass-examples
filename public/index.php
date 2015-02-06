@@ -11,8 +11,10 @@ $config = function() use ($path) {
     return require ($path . '/config/config.php');
 };
 
+$configuration = require $path . '/config/config.php';
+
 $diContainerBuilder = new Aura\Di\ContainerBuilder();
-$di = $diContainerBuilder->newInstance(['config' => $config], ['Masterclass\Configuration\DiConfig', 'Masterclass\Configuration\RouterConfig']);
+$di = $diContainerBuilder->newInstance(['config' => $config], $configuration['config_classes']);
 
 
 $framework = $di->newInstance('Masterclass\FrontController\MasterController');
