@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2c6c28f650f8af6ed7d08ffd09db3e53",
+    "hash": "1659544c2add9366c2de8618f3eaeb5a",
     "packages": [
         {
             "name": "aura/di",
@@ -57,6 +57,62 @@
                 "di container"
             ],
             "time": "2014-11-06 18:13:34"
+        },
+        {
+            "name": "aura/filter",
+            "version": "dev-develop-2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/auraphp/Aura.Filter.git",
+                "reference": "e02b8b54b3d2f2c185058b7b0414bf159ba6d229"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/auraphp/Aura.Filter/zipball/e02b8b54b3d2f2c185058b7b0414bf159ba6d229",
+                "reference": "e02b8b54b3d2f2c185058b7b0414bf159ba6d229",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "aura": {
+                    "type": "library",
+                    "config": {
+                        "common": "Aura\\Filter\\_Config\\Common"
+                    }
+                },
+                "branch-alias": {
+                    "dev-develop-2": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aura\\Filter\\_Config\\": "config/",
+                    "Aura\\Filter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Aura Contributors",
+                    "homepage": "https://github.com/auraphp/Aura.Filter/contributors"
+                }
+            ],
+            "description": "Validate and sanitize objects and arrays.",
+            "homepage": "http://auraphp.github.com/Aura.Filter",
+            "keywords": [
+                "filter",
+                "sanitize",
+                "validate",
+                "validation",
+                "validator"
+            ],
+            "time": "2015-01-14 23:14:33"
         },
         {
             "name": "aura/view",
@@ -967,7 +1023,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "aura/filter": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

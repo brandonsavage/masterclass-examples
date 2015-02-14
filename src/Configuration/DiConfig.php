@@ -42,11 +42,12 @@ class DiConfig extends Config
         ];
 
         $di->params['Masterclass\Controller\Story'] = [
-            'storyModel' => $di->lazyNew('Masterclass\Model\Story'),
-            'commentModel' => $di->lazyNew('Masterclass\Model\Comment'),
+            'story' => $di->lazyNew('Masterclass\Model\Story'),
+            'comment' => $di->lazyNew('Masterclass\Model\Comment'),
             'request' => $di->lazyNew('Aura\Web\Request'),
             'response' => $di->lazyNew('Aura\Web\Response'),
             'view' => $di->lazyNew('Aura\View\View'),
+            'service' => $di->lazyGet('createStory'),
         ];
 
         $di->params['Masterclass\Controller\Index'] = [

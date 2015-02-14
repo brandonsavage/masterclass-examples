@@ -1,5 +1,7 @@
 <?php
 
+use Aura\Di\ContainerBuilder;
+
 session_start();
 
 $path = realpath(__DIR__ . '/..');
@@ -13,7 +15,7 @@ $config = function() use ($path) {
 
 $configuration = require $path . '/config/config.php';
 
-$diContainerBuilder = new Aura\Di\ContainerBuilder();
+$diContainerBuilder = new ContainerBuilder();
 $di = $diContainerBuilder->newInstance(['config' => $config], $configuration['config_classes']);
 
 
