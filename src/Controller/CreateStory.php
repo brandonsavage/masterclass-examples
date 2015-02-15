@@ -41,50 +41,62 @@ class CreateStory
      */
     protected $template;
 
+    protected $requestType;
+
+    protected $user;
+
     public function __construct(
         Request $request,
-        Response $response,
-        Story $story,
         CreateStoryService $service,
-        StoryForm $form,
-        View $template
+        StoryForm $form
     ) {
         $this->request = $request;
-        $this->response = $response;
-        $this->story = $story;
         $this->service = $service;
         $this->form = $form;
-        $this->template = $template;
+
+        $this->requestType = $this->request->method->get();
+
+        if (isset($_SESSION['AUTHENTICATED']) && $_SESSION['username']) {
+            $this->responseType = 'html';
+            $this->user = $_SESSION['username'];
+        } else if ($this->request->post->get('username')) {
+            $this->responseType = 'json';
+            $this->user = $this->request->post->get('username');
+        } else {
+            $this->user = null;
+        }
     }
 
     public function create() {
-        if(!isset($_SESSION['AUTHENTICATED'])) {
-            $this->response->redirect->to('/users/login');
-            return $this->response;
+
+        $response = [
+            'type' => $this->responseType,
+            'form' => $this->form,
+            'id' => null,
+            'error' => null,
+        ];
+
+        if(!$this->user) {
+            $response = ['unauthenticated user'];
+            return $response;
         }
 
         $form = $this->form;
 
-        $headline = $this->request->post->get('headline');
-        $url = $this->request->post->get('url');
-
-        $result = null;
-        $error = null;
-
-        $create = $this->request->post->get('create');
+        $create = ($this->requestType == 'POST') ? true : false;
         if($create) {
+            $headline = $this->request->post->get('headline');
+            $url = $this->request->post->get('url');
             $form->populateData($this->request->post->get());
             if($form->isValid()) {
-                $id = $this->service->createNewStory($headline, $url, $_SESSION['username']);
-                $this->response->redirect->to("/story?id=$id");
-                return $this->response;
+                $id = $this->service->createNewStory($headline, $url, $this->user);
+                $response['id'] = $id;
+                return $response;
+            } else {
+                $response['error'] = 'form validation error';
             }
         }
 
-        $this->template->setView('story_create');
-        $this->template->setLayout('layout');
-        $this->template->setData(['error' => $error, 'form' => $form]);
-        $this->response->content->set($this->template->__invoke());
-        return $this->response;
+        return $response;
     }
 }

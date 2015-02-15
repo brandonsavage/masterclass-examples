@@ -28,17 +28,37 @@ class MasterController {
         $this->container = $container;
         $this->router = $router;
     }
-    
-    public function execute() {
-        $match = $this->_determineControllers();
 
+    public function execute()
+    {
+        $match = $this->_determineControllers();
         $calling = $match->getRouteClass();
-        list($class, $method) = explode(':', $calling);
+
+        if(isset($calling['action'])) {
+            $this->executeADR($calling);
+        } else {
+            $this->executeMVC($calling);
+        }
+    }
+
+    public function executeMVC($calling) {
+        list($class, $method) = explode(':', $calling['class']);
         $o = $this->container->newInstance($class);
         $response = $o->$method();
         if($response instanceof Response) {
             $this->sendResponse($response);
         }
+    }
+
+    public function executeADR($calling) {
+        list($action, $method) = explode(':', $calling['action']);
+        list($responder, $rMethod) = explode(':', $calling['responder']);
+        $o = $this->container->newInstance($action);
+        $data = $o->$method();
+
+        $responder = $this->container->newInstance($responder);
+        $response = call_user_func_array([$responder, $rMethod], $data);
+        $this->sendResponse($response);
     }
 
     public function sendResponse(Response $response)

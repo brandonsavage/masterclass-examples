@@ -18,9 +18,9 @@ class RouterConfig extends Config
 
         foreach($routes as $path => $route) {
             if ($route['type'] == 'POST') {
-                $routeObj[] = new PostRoute($path, $route['class']);
+                $routeObj[] = new PostRoute($path, $route);
             } else {
-                $routeObj[] = new GetRoute($path, $route['class']);
+                $routeObj[] = new GetRoute($path, $route);
             }
         }
 

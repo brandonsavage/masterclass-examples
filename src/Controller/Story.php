@@ -59,15 +59,13 @@ class Story {
         $id = (int)$_GET['id'];
 
         if(!$id) {
-            $this->response->redirect->to('/');
-            return $this->response;
+            return [];
         }
 
         $story = $this->storyModel->getStory($id);
 
         if(!$story) {
-            $this->response->redirect->to('/');
-            return $this->response;
+            return [];
         }
 
         $comments = $this->commentModel->getCommentsForStory($story['id']);
@@ -76,11 +74,9 @@ class Story {
 
         $story['comment_count'] = $comment_count;
 
-        $this->template->setData(['story' => $story, 'comments' => $comments]);
-        $this->template->setView('story');
-        $this->template->setLayout('layout');
-        $this->response->content->set($this->template->__invoke());
-        return $this->response;
+        return ['story' => $story, 'comments' => $comments];
+
+
     }
     
 }
