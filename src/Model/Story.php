@@ -3,6 +3,7 @@
 namespace Masterclass\Model;
 
 use Masterclass\Dbal\AbstractDb;
+use Masterclass\Entity\StoryCollection;
 use PDO;
 
 class Story
@@ -27,34 +28,46 @@ class Story
         $sql = 'SELECT * FROM story ORDER BY created_on DESC';
         $stories = $this->db->fetchAll($sql);
 
+        $storyObj = new StoryCollection();
+
         foreach($stories as $key => $story) {
             $comment_sql = 'SELECT COUNT(*) as `count` FROM comment WHERE story_id = ?';
             $count = $this->db->fetchOne($comment_sql, [$story['id']]);
-            $stories[$key]['count'] = $count['count'];
+            $stories[$key]['comment_count'] = $count['count'];
         }
 
-        return $stories;
+        foreach($stories as $story) {
+            $obj = new \Masterclass\Entity\Story();
+            $obj->populate($story);
+            $storyObj->addStory($obj);
+        }
+
+        return $storyObj;
     }
 
     /**
      * @param integer $id
-     * @return array|bool
+     * @return \Masterclass\Entity\Story
      */
     public function getStory($id)
     {
         $story_sql = 'SELECT * FROM story WHERE id = ?';
-        return $this->db->fetchOne($story_sql, [$id]);
+        $story_data = $this->db->fetchOne($story_sql, [$id]);
+        $story = new \Masterclass\Entity\Story();
+        $story->populate($story_data);
+        return $story;
     }
 
-    public function createNewStory($headline, $url, $creator)
+    public function createNewStory(\Masterclass\Entity\Story $story)
     {
         $sql = 'INSERT INTO story (headline, url, created_by, created_on) VALUES (?, ?, ?, NOW())';
+        $data = $story->toArray();
         $this->db->execute($sql, array(
-            $headline,
-            $url,
-            $creator
+            $data['headline'],
+            $data['url'],
+            $data['created_by']
         ));
 
-        return $this->db->lastInsertId();
+        return $this->getStory($this->db->lastInsertId());
     }
 }

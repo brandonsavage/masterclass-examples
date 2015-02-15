@@ -6,9 +6,15 @@ use Masterclass\Form\FormBase;
 
 class CreateStoryResponder extends ResponderBase
 {
-    public function process($type, FormBase $form, $id = null, $error = null)
+    protected $accept = [
+        'application/json',
+        'text/html',
+
+    ];
+
+    public function process(FormBase $form, $id = null, $error = null)
     {
-        if ($type == 'html') {
+        if ($this->useType == 'html') {
             return $this->htmlResponse($form, $id, $error);
         } else {
             return $this->jsonResponse($form, $id, $error);

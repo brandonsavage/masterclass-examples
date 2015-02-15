@@ -19,6 +19,10 @@ class CreateStoryService
 
     public function createNewStory($headline, $url, $username)
     {
-        return (int)$this->storyModel->createNewStory($headline, $url, $username);
+        $story = new \Masterclass\Entity\Story();
+        $story->setHeadline($headline);
+        $story->setCreatedBy($username);
+        $story->setUrl($url);
+        return $this->storyModel->createNewStory($story);
     }
 }

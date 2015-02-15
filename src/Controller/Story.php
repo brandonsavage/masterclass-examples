@@ -68,11 +68,11 @@ class Story {
             return [];
         }
 
-        $comments = $this->commentModel->getCommentsForStory($story['id']);
+        $comments = $this->commentModel->getCommentsForStory($story->getId());
 
         $comment_count = count($comments);
 
-        $story['comment_count'] = $comment_count;
+        $story->setCommentCount($comment_count);
 
         return ['story' => $story, 'comments' => $comments];
 

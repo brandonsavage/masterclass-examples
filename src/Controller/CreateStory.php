@@ -57,10 +57,8 @@ class CreateStory
         $this->requestType = $this->request->method->get();
 
         if (isset($_SESSION['AUTHENTICATED']) && $_SESSION['username']) {
-            $this->responseType = 'html';
             $this->user = $_SESSION['username'];
         } else if ($this->request->post->get('username')) {
-            $this->responseType = 'json';
             $this->user = $this->request->post->get('username');
         } else {
             $this->user = null;
@@ -70,7 +68,6 @@ class CreateStory
     public function create() {
 
         $response = [
-            'type' => $this->responseType,
             'form' => $this->form,
             'id' => null,
             'error' => null,
@@ -89,8 +86,8 @@ class CreateStory
             $url = $this->request->post->get('url');
             $form->populateData($this->request->post->get());
             if($form->isValid()) {
-                $id = $this->service->createNewStory($headline, $url, $this->user);
-                $response['id'] = $id;
+                $story = $this->service->createNewStory($headline, $url, $this->user);
+                $response['id'] = $story->getId();
                 return $response;
             } else {
                 $response['error'] = 'form validation error';

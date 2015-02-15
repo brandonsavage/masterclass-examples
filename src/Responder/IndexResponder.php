@@ -2,10 +2,12 @@
 
 namespace Masterclass\Responder;
 
+use Masterclass\Entity\StoryCollection;
+
 class IndexResponder extends ResponderBase
 {
 
-    public function processResponse(array $stories = [])
+    public function processResponse(StoryCollection $stories)
     {
         $this->template->setLayout('layout');
         $this->template->setView('index');

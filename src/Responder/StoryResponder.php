@@ -5,7 +5,7 @@ namespace Masterclass\Responder;
 class StoryResponder extends ResponderBase
 {
 
-    public function processResponse(array $story = [], array $comments = [])
+    public function processResponse($story, array $comments = [])
     {
         if(empty($story)) {
             $this->response->redirect->to('/');
