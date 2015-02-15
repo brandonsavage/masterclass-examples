@@ -31,7 +31,6 @@ class Index {
     
     public function __construct(
         Story $story,
-        Request $request,
         Response $response,
         View $view
     ) {

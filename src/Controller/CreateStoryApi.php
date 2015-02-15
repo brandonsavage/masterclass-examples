@@ -22,11 +22,6 @@ class CreateStoryApi
     protected $response;
 
     /**
-     * @var Story
-     */
-    protected $story;
-
-    /**
      * @var CreateStoryService
      */
     protected $service;
@@ -44,17 +39,13 @@ class CreateStoryApi
     public function __construct(
         Request $request,
         Response $response,
-        Story $story,
         CreateStoryService $service,
-        StoryForm $form,
-        View $template
+        StoryForm $form
     ) {
         $this->request = $request;
         $this->response = $response;
-        $this->story = $story;
         $this->service = $service;
         $this->form = $form;
-        $this->template = $template;
     }
 
     public function create() {
